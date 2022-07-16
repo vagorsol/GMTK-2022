@@ -2,7 +2,13 @@
     Author: Audrey Yang
     Date Created: 7/15/2022
     Date Modified: N/A
-    Player movement and interaction controls
+    Player movement and interaction controls:
+        Move Left/Right: A/D  or left/right
+        Change Level(?): W/D or up/down
+        Jump: space
+        Interact: F
+        Open Inventory: E
+        Pause?
 */
 
 using UnityEngine;
@@ -16,10 +22,11 @@ public class PlayerControls : MonoBehaviour{
         // left/right movement
         moveAmount = Input.GetAxis("Horizontal");
         gameObject.transform.position = new Vector2(transform.position.x + (moveAmount * speed), transform.position.y);
-
-        // click to interact with objects?
-        if(Input.GetButton("Fire1")){
+        
+        if(Input.GetButtonDown("Vertical")){
 
         }
+        
+        // open men
     }
 }
