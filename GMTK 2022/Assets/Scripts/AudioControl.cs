@@ -1,18 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
-public class AudioControl : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+public class AudioControl : MonoBehaviour{
+    [SerializeField] private AudioMixer myAudioMixer;
     // Update is called once per frame
-    void Update()
-    {
-        
+    public void setVolume(float sliderValue){
+        myAudioMixer.SetFloat("MusicVolume", Mathf.Log10(sliderValue) * 20);
     }
 }
