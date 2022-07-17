@@ -41,6 +41,7 @@ public class KeySlotScript : MonoBehaviour, IDropHandler
                                                                     menuCanvas.worldCamera,
                                                                     out pos);
 
+            dragTransform.SetParent(transform, false);
             dragTransform.position = menuCanvas.transform.TransformPoint(pos);
             if (ks.position >= 0) {
                 phaser.SetKey(-1, ks.position);

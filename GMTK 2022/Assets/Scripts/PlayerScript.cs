@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
@@ -16,27 +18,32 @@ public class PlayerScript : MonoBehaviour
     private JournalScript journal;
     [SerializeField]
     private PhaserScript phaser;
+    [SerializeField]
+    private Text coins;
+    [SerializeField]
+    private Canvas hints;
     private Rigidbody2D rb;
     private PlayerControl control;
 
     // variables used by code
     private int collisionCount = 0;
-    private int coinCount = 0;
+    private int coinCount = 3;
     private bool grounded = true;
     private SlotMachineScript slotMachine = null;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
         control = new PlayerControl();
         control.Player.Jump.performed += Jump;
         control.Player.PullSlotMachine.performed += PullSlotMachine;
+        InputSystem.onAnyButtonPress
+            .CallOnce(ctrl => hints.enabled = false);
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
     }
 
     void OnDestroy() {
@@ -86,13 +93,16 @@ public class PlayerScript : MonoBehaviour
                 break;
             case "Coin":
                 coinCount++;
+                coins.text = coinCount.ToString("0 coins");
                 collider.gameObject.GetComponent<CoinScript>().PickUp();
                 break;
             case "Clue":
-                if (levelManager.GetFloor() > 0) {
-                    journal.recordDigit(levelManager.GetExitRoomDigit(), levelManager.GetFloor());
-                }
+                collider.gameObject.GetComponent<ClueScript>().PickUp();
+                journal.recordDigit(levelManager.GetExitRoomDigit(), levelManager.GetFloor());
                 collider.gameObject.SetActive(false);
+                break;
+            case "Milk":
+                // win condition
                 break;
         }
     }

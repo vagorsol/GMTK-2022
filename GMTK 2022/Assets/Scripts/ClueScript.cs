@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ClueScript : MonoBehaviour
 {
+    [SerializeField]
+    private LevelManager levelManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +17,10 @@ public class ClueScript : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void PickUp() {
+        levelManager.CollectClue();
+        gameObject.SetActive(false);
     }
 }

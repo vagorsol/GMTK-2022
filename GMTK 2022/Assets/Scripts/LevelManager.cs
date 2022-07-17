@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    private static int MAX_ROOMS = 1_000_000_000;
+    private static int MAX_ROOMS = 900_000_000;
     private int roomId = 0;
     private float startTime = 0;
     private int exitRoom;
@@ -13,9 +13,14 @@ public class LevelManager : MonoBehaviour
     private List<int> visitHistory;
     private RoomDetail currentRoomDetail;
     private List<CoinScript> coins;
+    private bool[] collectedClues;
+    [SerializeField]
+    private ClueScript clue;
     private List<TerrainScript> dynTerrain;
     [SerializeField]
     private Text timer;
+    [SerializeField]
+    private Text roomNumber;
 
     void Awake() {
         visitHistory = new List<int>();
@@ -23,12 +28,15 @@ public class LevelManager : MonoBehaviour
         AddRoomToHistory(roomId);
         coins = new List<CoinScript>();
         dynTerrain = new List<TerrainScript>();
+        collectedClues = new bool[9];
+        
+        exitRoom = Random.Range(0, MAX_ROOMS);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        exitRoom = Random.Range(0, 1_000_000_000);
+
     }
 
     void OnEnable() {
@@ -49,6 +57,7 @@ public class LevelManager : MonoBehaviour
     public void SetRoom(int id)
     {
         roomId = Mathf.Clamp(id, 0, MAX_ROOMS);
+        roomNumber.text = roomId.ToString("Room 000 000 000");
         AddRoomToHistory(roomId);
         BuildRoom(roomId);
         Debug.Log(roomId);
@@ -56,6 +65,7 @@ public class LevelManager : MonoBehaviour
 
     public void MoveRoom(int dir) {
         roomId = Mathf.Clamp(roomId + (int)Mathf.Sign(dir), 0, MAX_ROOMS - 1);
+        roomNumber.text = roomId.ToString("000 000 000");
         AddRoomToHistory(roomId);
         BuildRoom(roomId);
         Debug.Log(roomId);
@@ -77,6 +87,10 @@ public class LevelManager : MonoBehaviour
             }
             position = (position + 1) % 30;
         }
+        if (!collectedClues[GetFloor()]) {
+            clue.gameObject.SetActive((roomId >> position & 1) == 0);
+        }
+        position = (position + 1) % 30;
         foreach (TerrainScript te in dynTerrain) {
             te.gameObject.SetActive((roomId >> position & 1) == 0);
             position = (position + 1) % 30;
@@ -96,6 +110,11 @@ public class LevelManager : MonoBehaviour
         currentRoomDetail.collected.Add(id);
     }
 
+    public void CollectClue() {
+        Debug.LogFormat("collected floor {0} clue", GetFloor());
+        collectedClues[GetFloor()] = true;
+    }
+
     public int AddTerrain(TerrainScript ts) {
         dynTerrain.Add(ts);
         return dynTerrain.Count;
@@ -106,7 +125,7 @@ public class LevelManager : MonoBehaviour
     }
 
     public int GetExitRoomDigit() {
-        return (exitRoom / (int) Mathf.Pow(10, 9 - GetFloor())) % 10;
+        return (exitRoom / (int) Mathf.Pow(10, 8 - GetFloor())) % 10;
     }
 }
 

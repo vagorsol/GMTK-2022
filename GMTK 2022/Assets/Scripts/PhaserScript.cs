@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -105,7 +106,7 @@ public class PhaserScript : MonoBehaviour
             int dest = 0;
             int power = 6;
             foreach (int key in keys) {
-                int destSub = key < 0 ? Random.Range(0, 1000) : key;
+                int destSub = key < 0 ? Random.Range(0, power == 6 ? 900 : 1000) : key;
                 dest += destSub * (int)Mathf.Pow(10, power);
                 power -= 3;
             }

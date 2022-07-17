@@ -25,7 +25,7 @@ public class SlotMachineScript : MonoBehaviour
         int key = 0;
         Debug.LogFormat("Time: {0}, Room: {1}", time, room);
         for (int i = 0; i < 3; i++) {
-            int n = 8 - 3 * i - time % 10 % 3;
+            int n = ((-4 * i - (time % 10 % 3)) % 8 + 8) % 8;
             key += (int) Mathf.Pow(10, 2 - i) * ((room / (int) Mathf.Pow(10, n)) % 10);
         }
         Debug.Log("Generated key: " + key.ToString());

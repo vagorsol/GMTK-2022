@@ -5,14 +5,16 @@ TagManager:
   serializedVersion: 2
   tags:
   - SlotMachine
+  - Coin
+  - Clue
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - PickUp
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

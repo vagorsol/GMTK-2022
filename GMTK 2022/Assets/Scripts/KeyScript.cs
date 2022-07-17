@@ -10,6 +10,8 @@ public class KeyScript : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     [SerializeField]
     private Text keyNumber;
     private RectTransform rectTransform; 
+    private Transform parent;
+    private Vector2 startPosition;
     private CanvasGroup canvasGroup;
     private int key;
     public int position { get; set; } = -1;
@@ -33,10 +35,16 @@ public class KeyScript : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     }
 
     public void OnBeginDrag(PointerEventData eventData) {
+        startPosition = transform.position;
         canvasGroup.blocksRaycasts = false;
     }
 
     public void OnEndDrag(PointerEventData eventData) {
+        if (transform.parent == parent) {
+            transform.position = startPosition;
+        } else {
+            parent = transform.parent;
+        }
         canvasGroup.blocksRaycasts = true;
     }
 

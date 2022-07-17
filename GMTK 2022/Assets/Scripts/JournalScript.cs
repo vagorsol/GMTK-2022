@@ -32,6 +32,14 @@ public class JournalScript : MonoBehaviour
         control.Journal.JournalMenu.canceled -= HideMenu;
     }
 
+    void OnEnable() {
+        control.Journal.Enable();
+    }
+
+    void OnDisable() {
+        control.Journal.Disable();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,12 +54,15 @@ public class JournalScript : MonoBehaviour
 
     public void recordDigit(int digit, int position) {
         digits[position] = digit;
-        text.text.Remove(position, 1);
-        text.text.Insert(position, digit.ToString("0"));
-        Debug.Log(text.text);
+        string exit = text.text;
+        Debug.Log(exit);
+        exit = exit.Remove(position, 1).Insert(position, digit.ToString("0"));
+        Debug.Log(exit);
+        text.text = exit;
     }
 
     void ShowMenu(InputAction.CallbackContext ctx) {
+        Debug.Log("showing menu");
         menuCanvas.enabled = true;
     }
 
