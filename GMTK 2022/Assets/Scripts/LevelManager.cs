@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    private static int MAX_ROOMS = 900_000_000;
+    private static int MAX_ROOMS = 600_000;
     private int roomId = 0;
     private float startTime = 0;
     private int exitRoom;
@@ -21,6 +21,8 @@ public class LevelManager : MonoBehaviour
     private Text timer;
     [SerializeField]
     private Text roomNumber;
+    [SerializeField]
+    private GameObject milk;
 
     void Awake() {
         visitHistory = new List<int>();
@@ -28,7 +30,7 @@ public class LevelManager : MonoBehaviour
         AddRoomToHistory(roomId);
         coins = new List<CoinScript>();
         dynTerrain = new List<TerrainScript>();
-        collectedClues = new bool[9];
+        collectedClues = new bool[6];
         
         exitRoom = Random.Range(0, MAX_ROOMS);
     }
@@ -36,7 +38,7 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        milk.SetActive(false);
     }
 
     void OnEnable() {
@@ -46,7 +48,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer.text = (Time.time - startTime).ToString("0");
+        timer.text = ((int)(Time.time - startTime)).ToString("0");
     }
 
     public int GetRoom()
@@ -56,19 +58,20 @@ public class LevelManager : MonoBehaviour
 
     public void SetRoom(int id)
     {
-        roomId = Mathf.Clamp(id, 0, MAX_ROOMS);
-        roomNumber.text = roomId.ToString("Room 000 000 000");
+        roomId = Mathf.Clamp(id, 0, MAX_ROOMS - 1);
+        roomNumber.text = roomId.ToString("Room 000 000");
+        if (roomId == exitRoom) {
+            milk.SetActive(true);
+        } else {
+            milk.SetActive(false);
+        }
         AddRoomToHistory(roomId);
         BuildRoom(roomId);
         Debug.Log(roomId);
     }
 
     public void MoveRoom(int dir) {
-        roomId = Mathf.Clamp(roomId + (int)Mathf.Sign(dir), 0, MAX_ROOMS - 1);
-        roomNumber.text = roomId.ToString("000 000 000");
-        AddRoomToHistory(roomId);
-        BuildRoom(roomId);
-        Debug.Log(roomId);
+        SetRoom(roomId + (int)Mathf.Sign(dir));
     }
 
     void AddRoomToHistory(int roomId) {
@@ -121,11 +124,11 @@ public class LevelManager : MonoBehaviour
     }
 
     public int GetFloor() {
-        return roomId / 100_000_000;
+        return roomId / 100_000;
     }
 
     public int GetExitRoomDigit() {
-        return (exitRoom / (int) Mathf.Pow(10, 8 - GetFloor())) % 10;
+        return (exitRoom / (int) Mathf.Pow(10, 5 - GetFloor())) % 10;
     }
 }
 

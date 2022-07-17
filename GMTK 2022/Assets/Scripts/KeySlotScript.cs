@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class KeySlotScript : MonoBehaviour, IDropHandler
 {
-    private static int ID = 0;
+    [SerializeField]
+    private int ID = 0;
 
     [SerializeField]
     private Canvas menuCanvas;

@@ -21,6 +21,8 @@ public class PlayerScript : MonoBehaviour
     [SerializeField]
     private Text coins;
     [SerializeField]
+    private Text winMessage;
+    [SerializeField]
     private Canvas hints;
     private Rigidbody2D rb;
     private PlayerControl control;
@@ -43,7 +45,7 @@ public class PlayerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        winMessage.enabled = false;
     }
 
     void OnDestroy() {
@@ -72,7 +74,7 @@ public class PlayerScript : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision) {
         collisionCount++;
         foreach (ContactPoint2D contact in collision.contacts) {
-            if (contact.normal.y > 0.71f) {
+            if (contact.normal.y > 0.7f) {
                 grounded = true;
             }
             break;
@@ -102,7 +104,8 @@ public class PlayerScript : MonoBehaviour
                 collider.gameObject.SetActive(false);
                 break;
             case "Milk":
-                // win condition
+                winMessage.enabled = true;
+                collider.gameObject.SetActive(false);
                 break;
         }
     }
@@ -123,6 +126,7 @@ public class PlayerScript : MonoBehaviour
     void PullSlotMachine(InputAction.CallbackContext ctx) {
         if (slotMachine != null && coinCount > 0) {
             coinCount--;
+            coins.text = coinCount.ToString("0 coins");
             phaser.AddKey(slotMachine.GenerateKey());
         }
     }

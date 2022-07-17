@@ -14,8 +14,8 @@ public class JournalScript : MonoBehaviour
     private Text text;
 
     void Awake() {
-        digits = new int[9];
-        for (int i = 0; i < 9; i++) {
+        digits = new int[6];
+        for (int i = 0; i < 6; i++) {
             digits[i] = -1;
         }
         
@@ -23,7 +23,7 @@ public class JournalScript : MonoBehaviour
         control.Journal.JournalMenu.started += ShowMenu;
         control.Journal.JournalMenu.canceled += HideMenu;
 
-        text.text = "*********";
+        text.text = "******";
         menuCanvas.enabled = false;
     }
 

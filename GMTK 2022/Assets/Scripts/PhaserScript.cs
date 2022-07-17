@@ -69,7 +69,7 @@ public class PhaserScript : MonoBehaviour
         keyScript.SetCanvas(menuCanvas);
         keyObj.SetActive(true);
         keyObj.transform.SetParent(keyContent.transform, false);
-        Debug.Log("Added key: " + key.ToString("000"));
+        Debug.Log("Added key: " + key.ToString("00"));
     }
 
     public void SetKey(int key, int position) {
@@ -104,11 +104,11 @@ public class PhaserScript : MonoBehaviour
     public void Phase() {
         if (Time.time - phaseTime > PHASE_COOLDOWN) {
             int dest = 0;
-            int power = 6;
+            int power = 4;
             foreach (int key in keys) {
-                int destSub = key < 0 ? Random.Range(0, power == 6 ? 900 : 1000) : key;
+                int destSub = key < 0 ? Random.Range(0, power == 4 ? 60 : 100) : key;
                 dest += destSub * (int)Mathf.Pow(10, power);
-                power -= 3;
+                power -= 2;
             }
             levelManager.SetRoom(dest);
         }

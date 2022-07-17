@@ -62,6 +62,6 @@ public class KeyScript : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
 
     public void SetKey(int k) {
         key = k;
-        keyNumber.text = key.ToString("000");
+        keyNumber.text = key.ToString("00");
     }
 }
