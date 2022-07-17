@@ -1,7 +1,10 @@
 /**
-    Created by: Audrey Yang
-
+    Author: Audrey Yang
+    Date Created: 7/15/2022
+    Date Modified: N/A
+    Basic menuing functions
 */
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
