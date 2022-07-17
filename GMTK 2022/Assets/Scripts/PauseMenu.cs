@@ -1,9 +1,3 @@
-/**
-    Author: Audrey Yang
-    Date Created: 7/15/2022
-    Date Modified: N/A
-    Call pause menu
-*/
 using UnityEngine;
 
 public class PauseMenu : MonoBehaviour {
