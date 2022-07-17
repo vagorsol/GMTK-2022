@@ -23,7 +23,7 @@ public class JournalScript : MonoBehaviour
         control.Journal.JournalMenu.started += ShowMenu;
         control.Journal.JournalMenu.canceled += HideMenu;
 
-        text.text = "******";
+        text.text = "------";
         menuCanvas.enabled = false;
     }
 
