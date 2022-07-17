@@ -24,8 +24,8 @@ public class PhaserScript : MonoBehaviour
     void Awake()
     {
         control = new PlayerControl();
-        control.Phaser.PhaseUp.performed += PhaseUp;
-        control.Phaser.PhaseDown.performed += PhaseDown;
+        control.Phaser.PhaseUp.started += PhaseUp;
+        control.Phaser.PhaseDown.started += PhaseDown;
         control.Phaser.PhaseMenu.started += ShowMenu;
         control.Phaser.PhaseMenu.canceled += HideMenu;
 
@@ -35,8 +35,8 @@ public class PhaserScript : MonoBehaviour
 
     void OnDestroy()
     {
-        control.Phaser.PhaseUp.performed -= PhaseUp;
-        control.Phaser.PhaseDown.performed -= PhaseDown;
+        control.Phaser.PhaseUp.started -= PhaseUp;
+        control.Phaser.PhaseDown.started -= PhaseDown;
         control.Phaser.PhaseMenu.started -= ShowMenu;
         control.Phaser.PhaseMenu.canceled -= HideMenu;
     }

@@ -36,8 +36,8 @@ public class PlayerScript : MonoBehaviour
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
         control = new PlayerControl();
-        control.Player.Jump.performed += Jump;
-        control.Player.PullSlotMachine.performed += PullSlotMachine;
+        control.Player.Jump.started += Jump;
+        control.Player.PullSlotMachine.started += PullSlotMachine;
         InputSystem.onAnyButtonPress
             .CallOnce(ctrl => hints.enabled = false);
     }
@@ -49,8 +49,8 @@ public class PlayerScript : MonoBehaviour
     }
 
     void OnDestroy() {
-        control.Player.Jump.performed -= Jump;
-        control.Player.PullSlotMachine.performed -= PullSlotMachine;
+        control.Player.Jump.started -= Jump;
+        control.Player.PullSlotMachine.started -= PullSlotMachine;
     }
 
     void OnEnable() {
