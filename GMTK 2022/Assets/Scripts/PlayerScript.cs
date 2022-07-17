@@ -1,14 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
     // settings
-    private float playerSpeed = 6.0f;
+    private float playerSpeed = 12.0f;
     private float jumpSpeed = 6.0f;
 
     // variables referenced from other parts of the game
@@ -24,6 +24,8 @@ public class PlayerScript : MonoBehaviour
     private Text winMessage;
     [SerializeField]
     private Canvas hints;
+    [SerializeField]
+    private Animator levelAnim;
     private Rigidbody2D rb;
     private PlayerControl control;
 
@@ -31,15 +33,19 @@ public class PlayerScript : MonoBehaviour
     private int collisionCount = 0;
     private int coinCount = 3;
     private bool grounded = true;
+    private SpriteRenderer render;
     private SlotMachineScript slotMachine = null;
+    private IDisposable hintEvent;
+    private Animator playerAnim;
 
     void Awake() {
         rb = GetComponent<Rigidbody2D>();
+        playerAnim = GetComponent<Animator>();
+        render = GetComponent<SpriteRenderer>();
         control = new PlayerControl();
         control.Player.Jump.started += Jump;
         control.Player.PullSlotMachine.started += PullSlotMachine;
-        InputSystem.onAnyButtonPress
-            .CallOnce(ctrl => hints.enabled = false);
+        control.Player.PullSlotMachine.started += HideHintsSlotMachine;
     }
 
     // Start is called before the first frame update
@@ -68,7 +74,12 @@ public class PlayerScript : MonoBehaviour
     }
 
     void FixedUpdate() {
-        rb.velocity = new Vector2(playerSpeed * control.Player.Move.ReadValue<Vector2>().x, rb.velocity.y);
+        float xAxis = control.Player.Move.ReadValue<Vector2>().x;
+        rb.velocity = new Vector2(playerSpeed * xAxis, rb.velocity.y);
+        playerAnim.SetTrigger(xAxis != 0 ? "Movement" : "Stop");
+        if (xAxis != 0) {
+            render.flipX = xAxis < 0;
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
@@ -97,17 +108,34 @@ public class PlayerScript : MonoBehaviour
                 coinCount++;
                 coins.text = coinCount.ToString("0 coins");
                 collider.gameObject.GetComponent<CoinScript>().PickUp();
+                HideHints();
                 break;
             case "Clue":
                 collider.gameObject.GetComponent<ClueScript>().PickUp();
                 journal.recordDigit(levelManager.GetExitRoomDigit(), levelManager.GetFloor());
                 collider.gameObject.SetActive(false);
+                HideHints();
                 break;
             case "Milk":
                 winMessage.enabled = true;
                 collider.gameObject.SetActive(false);
+                levelAnim.SetTrigger("FadeTrigger");
+                Invoke("NextScene", 1);
                 break;
         }
+    }
+
+    void HideHintsSlotMachine(InputAction.CallbackContext ctx) {
+        control.Player.PullSlotMachine.started -= HideHintsSlotMachine;
+        hints.enabled = false;
+    }
+
+    void HideHints() {
+        hints.enabled = false;
+    }
+
+    void NextScene() {
+        SceneManager.LoadScene(gameObject.scene.buildIndex + 1);
     }
 
     void OnTriggerExit2D(Collider2D collider) {

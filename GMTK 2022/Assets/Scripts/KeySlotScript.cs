@@ -6,18 +6,15 @@ using UnityEngine;
 public class KeySlotScript : MonoBehaviour, IDropHandler
 {
     [SerializeField]
-    private int ID = 0;
-
+    private int id = 0;
     [SerializeField]
     private Canvas menuCanvas;
     [SerializeField]
     private PhaserScript phaser;
     private RectTransform rTransform;
-    private int id;
 
     void Awake() {
         rTransform = GetComponent<RectTransform>();
-        id = ID++;
     }
 
     // Start is called before the first frame update

@@ -16,6 +16,10 @@ public class PhaserScript : MonoBehaviour
     private Image keyContent;
     [SerializeField]
     private GameObject keyTemplate;
+    [SerializeField]
+    private Text keyMessage;
+    [SerializeField]
+    private Animator keyAnim;
     private PlayerControl control;
     private List<int> keyList;
     private int[] keys;
@@ -69,7 +73,8 @@ public class PhaserScript : MonoBehaviour
         keyScript.SetCanvas(menuCanvas);
         keyObj.SetActive(true);
         keyObj.transform.SetParent(keyContent.transform, false);
-        Debug.Log("Added key: " + key.ToString("00"));
+        keyMessage.text = string.Format("Key acquired: {0}", key.ToString("00"));
+        keyAnim.SetTrigger("ShowKeyMessage");
     }
 
     public void SetKey(int key, int position) {
