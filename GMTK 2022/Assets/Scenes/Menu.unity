@@ -2247,7 +2247,7 @@ MonoBehaviour:
       - m_Target: {fileID: 1139950656}
         m_TargetAssemblyTypeName: AudioControl, Assembly-CSharp
         m_MethodName: setVolume
-        m_Mode: 4
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
