@@ -90,15 +90,15 @@ public class PhaserScript : MonoBehaviour
         Debug.Log("phasing up");
         if (Time.time - phaseTime > PHASE_COOLDOWN) {
             levelManager.MoveRoom(1);
+            phaseTime = Time.time;
         }
-        phaseTime = Time.time;
     }
 
     void PhaseDown(InputAction.CallbackContext ctx) {
         if (Time.time - phaseTime > PHASE_COOLDOWN) {
             levelManager.MoveRoom(-1);
+            phaseTime = Time.time;
         }
-        phaseTime = Time.time;
     }
 
     public void Phase() {
@@ -111,7 +111,7 @@ public class PhaserScript : MonoBehaviour
                 power -= 2;
             }
             levelManager.SetRoom(dest);
+            phaseTime = Time.time;
         }
-        phaseTime = Time.time;
     }
 }
