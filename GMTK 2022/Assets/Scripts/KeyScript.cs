@@ -11,6 +11,8 @@ public class KeyScript : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
     private Text keyNumber;
     private RectTransform rectTransform; 
     private CanvasGroup canvasGroup;
+    private int key;
+    public int position { get; set; } = -1;
 
     void Awake()
     {
@@ -46,7 +48,12 @@ public class KeyScript : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDra
         canvas = cv;
     }
 
-    public void SetText(string text) {
-        keyNumber.text = text;
+    public int GetKey() {
+       return key;
+    }
+
+    public void SetKey(int k) {
+        key = k;
+        keyNumber.text = key.ToString("000");
     }
 }

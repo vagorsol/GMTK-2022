@@ -7,11 +7,13 @@ public class PlayerScript : MonoBehaviour
 {
     // settings
     private float playerSpeed = 6.0f;
-    private float jumpSpeed = 5f;
+    private float jumpSpeed = 6.0f;
 
     // variables referenced from other parts of the game
     [SerializeField]
     private LevelManager levelManager;
+    [SerializeField]
+    private JournalScript journal;
     [SerializeField]
     private PhaserScript phaser;
     private Rigidbody2D rb;
@@ -84,6 +86,12 @@ public class PlayerScript : MonoBehaviour
                 break;
             case "Coin":
                 coinCount++;
+                collider.gameObject.GetComponent<CoinScript>().PickUp();
+                break;
+            case "Clue":
+                if (levelManager.GetFloor() > 0) {
+                    journal.recordDigit(levelManager.GetExitRoomDigit(), levelManager.GetFloor());
+                }
                 collider.gameObject.SetActive(false);
                 break;
         }

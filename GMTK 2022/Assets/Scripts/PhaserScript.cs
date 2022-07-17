@@ -64,15 +64,17 @@ public class PhaserScript : MonoBehaviour
         keyList.Add(key);
         GameObject keyObj = Instantiate(keyTemplate) as GameObject;
         KeyScript keyScript = keyObj.GetComponent<KeyScript>();
-        keyScript.SetText(key.ToString());
+        keyScript.SetKey(key);
         keyScript.SetCanvas(menuCanvas);
         keyObj.SetActive(true);
         keyObj.transform.SetParent(keyContent.transform, false);
-        Debug.Log("Added key: " + key.ToString());
+        Debug.Log("Added key: " + key.ToString("000"));
     }
 
     public void SetKey(int key, int position) {
         keys[position] = key;
+        Debug.Log(key);
+        Debug.LogFormat("keys: {0}, {1}, {2}", keys[0], keys[1], keys[2]);
     }
 
     void ShowMenu(InputAction.CallbackContext ctx) {
@@ -103,7 +105,7 @@ public class PhaserScript : MonoBehaviour
             int dest = 0;
             int power = 6;
             foreach (int key in keys) {
-                int destSub = key < 1 ? Random.Range(0, 1000) : key;
+                int destSub = key < 0 ? Random.Range(0, 1000) : key;
                 dest += destSub * (int)Mathf.Pow(10, power);
                 power -= 3;
             }

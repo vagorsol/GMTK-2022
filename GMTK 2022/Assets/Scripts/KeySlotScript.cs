@@ -5,8 +5,19 @@ using UnityEngine;
 
 public class KeySlotScript : MonoBehaviour, IDropHandler
 {
+    private static int ID = 0;
+
     [SerializeField]
-    Canvas menuCanvas;
+    private Canvas menuCanvas;
+    [SerializeField]
+    private PhaserScript phaser;
+    private RectTransform rTransform;
+    private int id;
+
+    void Awake() {
+        rTransform = GetComponent<RectTransform>();
+        id = ID++;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -22,14 +33,21 @@ public class KeySlotScript : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData) {
         RectTransform dragTransform = eventData.pointerDrag.GetComponent<RectTransform>();
-        if (dragTransform != null) {
+        KeyScript ks = dragTransform.gameObject.GetComponent<KeyScript>();
+        if (dragTransform != null && ks != null) {
             Vector2 pos;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(menuCanvas.transform as RectTransform,
-                                                                    eventData.position,
+                                                                    rTransform.position,
                                                                     menuCanvas.worldCamera,
                                                                     out pos);
 
             dragTransform.position = menuCanvas.transform.TransformPoint(pos);
+            if (ks.position >= 0) {
+                phaser.SetKey(-1, ks.position);
+            }
+            Debug.Log(id);
+            ks.position = id;
+            phaser.SetKey(ks.GetKey(), ks.position);
         }
     }
 }
